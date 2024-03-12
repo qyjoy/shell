@@ -1,4 +1,5 @@
 #!/bin/bash modified from lala 2024 March 9th by Joy
+#24H AUTO LIVE STREAM 
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
