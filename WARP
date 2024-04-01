@@ -1,0 +1,3 @@
+WARP
+bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh) 0.3.2
+
