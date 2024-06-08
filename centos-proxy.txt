@@ -1,0 +1,68 @@
+CentOS 7快速搭建shadowsocks服务，支持aes-256-gcm
+centos7 运维 · systemofdown · 于 7个月前 发布 · 1507 次阅读
+
+经常需要一个专有网络的代理服务器。
+
+升级Python3
+由于CentOS 7已经接近停止维护，系统中的python还是2.x版本，现在很多应用都是依赖python3的，我们这次也不例外先把python升级到3.x，参考Centos7使用Yum升级Python3
+
+安装配置shadowsocks
+shadowsocks2.8.2版本，不支持aes-256-gcm，我们这里选择3.0版本的。
+
+pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
+安装完成创建shadowsocks配置文件,vi /etc/shadowsocks.json
+
+{
+  "server": "0.0.0.0",
+  "server_port": 8090,
+  "password": "bestyii",
+  "method": "aes-256-gcm"
+}
+配置自启动 vi /etc/systemd/system/shadowsocks.service
+
+[Unit]
+Description=Shadowsocks
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/opt/rh/rh-python38/root/usr/local/bin/ssserver -c /etc/shadowsocks.json
+
+[Install]
+WantedBy=multi-user.target
+启动shadowsocks
+开机启动
+
+systemctl enable shadowsocks
+启动
+
+systemctl start shadowsocks
+查看shadowsocks状态
+systemctl status shadowsocks -l
+其他
+运行的时候有可能会出错，
+
+/usr/bin/python3: 坏的解释器: 没有那个文件或目录
+
+需要重新做个软连接
+
+ln -s /opt/rh/rh-python38/root/usr/bin/python3 /usr/bin/python3
+防火墙
+如果是云服务器、记得云服务后台放行端口
+
+如果是本地服务器，注意从配置中放行端口
+
+firewall-cmd --zone=public --add-port=8090/tcp --permanent
+重启防火墙
+
+firewall-cmd --reload
+升级pip
+如果需要的话可以升级一下
+
+pip install --upgrade pip
+升级之后，会出现些路径不存在的情况
+
+bash: /opt/rh/rh-python38/root/usr/bin/pip: 没有那个文件或目录
+
+需要重新执行下启用命令。
+
+scl enable rh-python38 bash
