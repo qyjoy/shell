@@ -101,5 +101,5 @@ sudo systemctl stop cups
 sudo systemctl disable cups
 
 12.文件校验同步：
-rsync -avnc --itemize-changes --delete -e "ssh -p 2701" /disk/public/APP/ root@101.36.116.28:/public/APP/
+rsync -avnc --itemize-changes --delete -e "ssh -p 2701" /disk/public/APP/ root@101.*.*.28:/public/APP/
 
